@@ -1,0 +1,25 @@
+# ===== secrets =====
+.env
+*.env
+*.pem
+*.key
+id_rsa
+id_ed25519
+
+
+# ===== python =====
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# ===== logs =====
+*.log
+logs/
+tmp/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+desktop.ini
+

@@ -1,0 +1,28 @@
+# --------------------------------------------------
+# [type](scope): <subject>
+#
+# body (optional)
+#
+# footer (optional)
+# --------------------------------------------------
+
+# type
+# feat     : 새로운 기능
+# fix      : 버그 수정
+# refactor : 리팩토링
+# style    : 코드 스타일
+# perf     : 성능 개선
+# docs     : 문서 수정
+# test     : 테스트
+# chore    : 기타 작업
+# ci       : CI/CD
+
+# 예시:
+# [feat](auth): add login API
+# [fix](db): correct join condition
+# [refactor](service): separate business logic
+
+#Subject Writing Rules (Core Guidelines)
+#Use the imperative form (e.g., add, fix, update)
+#Start with a lowercase letter
+#Do not end with a period
