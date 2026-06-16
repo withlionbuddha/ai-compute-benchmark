@@ -1,0 +1,248 @@
+{
+  "environment": {
+    "OMP_NUM_THREADS": "4",
+    "OPENBLAS_NUM_THREADS": "4",
+    "MKL_NUM_THREADS": "4",
+    "NUMEXPR_NUM_THREADS": "4",
+    "python": "3.10.20",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "torch": "2.12.0+xpu",
+    "torch_num_threads": 3,
+    "torch_num_interop_threads": 3,
+    "cuda_available": false,
+    "cuda_version": null,
+    "cudnn_version": null,
+    "cuda_device_count": 0,
+    "cuda_devices": []
+  },
+  "backend_info": {
+    "torch_config": "PyTorch built with:\n  - GCC 13.3\n  - C++ Version: 202002\n  - Intel(R) oneAPI Math Kernel Library Version 2025.3-Product Build 20251007 for Intel(R) 64 architecture applications\n  - Intel(R) MKL-DNN v3.11.2 (Git Hash 03c022d3ffdcee958cfacbe720048e725fdf644c)\n  - OpenMP 201511 (a.k.a. OpenMP 4.5)\n  - LAPACK is enabled (usually provided by MKL)\n  - NNPACK is enabled\n  - CPU capability usage: AVX2\nXPU backend  - Build settings: BLAS_INFO=mkl, BUILD_TYPE=Release, COMMIT_SHA=7661cd9c6b841b62b7f411aa52ec51f05457263b, CUDA_FLAGS= -DLIBCUDACXX_ENABLE_SIMPLIFIED_COMPLEX_OPERATIONS -Xfatbin -compress-all  -Wno-deprecated-gpu-targets --expt-extended-lambda -DCUB_WRAPPED_NAMESPACE=at_cuda_detail -DDISABLE_CUSPARSE_DEPRECATED -DCUDA_HAS_FP16=1 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -DC10_NODEPRECATED, CXX_COMPILER=/opt/rh/gcc-toolset-13/root/usr/bin/c++, CXX_FLAGS= -fvisibility-inlines-hidden -DUSE_PTHREADPOOL -DNDEBUG -DUSE_KINETO -DLIBKINETO_NOCUPTI -DLIBKINETO_NOROCTRACER -DLIBKINETO_NOXPUPTI=OFF -DUSE_FBGEMM -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DSYMBOLICATE_MOBILE_DEBUG_HANDLE -O2 -fPIC -DC10_NODEPRECATED -Wall -Wextra -Werror=return-type -Werror=non-virtual-dtor -Werror=range-loop-construct -Werror=bool-operation -Wnarrowing -Wno-missing-field-initializers -Wno-unknown-pragmas -Wno-unused-parameter -Wno-strict-overflow -Wno-strict-aliasing -Wno-stringop-overflow -Wsuggest-override -Wno-psabi -Wno-error=old-style-cast -faligned-new -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-dangling-reference -Wno-error=dangling-reference -Wno-stringop-overflow, LAPACK_INFO=mkl, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, SYCL_COMPILER_VERSION=20250302, TORCH_VERSION=2.12.0, USE_CUDA=0, USE_CUDNN=OFF, USE_CUSPARSELT=OFF, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_GLOO=ON, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=0, USE_NCCL=OFF, USE_NNPACK=ON, USE_OPENMP=ON, USE_ROCM=OFF, USE_ROCM_KERNEL_ASSERT=OFF, USE_XCCL=1, USE_XPU=ON, \n",
+    "threadpool_info": [
+      {
+        "user_api": "openmp",
+        "internal_api": "openmp",
+        "num_threads": 3,
+        "prefix": "libgomp",
+        "filepath": "/home/dev/.local/lib/python3.10/site-packages/torch/lib/libgomp.so.1",
+        "version": null
+      },
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 4,
+        "prefix": "libscipy_openblas",
+        "filepath": "/home/dev/.local/lib/python3.10/site-packages/numpy.libs/libscipy_openblas64_-56d6093b.so",
+        "version": "0.3.29",
+        "threading_layer": "pthreads",
+        "architecture": "Haswell"
+      }
+    ],
+    "parallel_info": "ATen/Parallel:\n\tat::get_num_threads() : 3\n\tat::get_num_interop_threads() : 3\nOpenMP 201511 (a.k.a. OpenMP 4.5)\n\tomp_get_max_threads() : 3\nIntel(R) oneAPI Math Kernel Library Version 2025.3-Product Build 20251007 for Intel(R) 64 architecture applications\n\tmkl_get_max_threads() : 3\nIntel(R) MKL-DNN v3.11.2 (Git Hash 03c022d3ffdcee958cfacbe720048e725fdf644c)\nstd::thread::hardware_concurrency() : 6\nEnvironment variables:\n\tOMP_NUM_THREADS : 4\n\tMKL_NUM_THREADS : 4\nATen parallel backend: OpenMP\n"
+  },
+  "benchmarks": [
+    {
+      "operation": "matrix_multiplication",
+      "library": "pytorch",
+      "device": "cpu",
+      "dtype": "float64",
+      "matrix_size": 1000,
+      "threads": 1,
+      "repeat": 3,
+      "times_sec": [
+        0.08300062900525518,
+        0.07635632800520398,
+        0.08455333800520748
+      ],
+      "avg_sec": 0.08130343167188887,
+      "min_sec": 0.07635632800520398,
+      "max_sec": 0.08455333800520748
+    },
+    {
+      "operation": "matrix_multiplication",
+      "library": "pytorch",
+      "device": "cpu",
+      "dtype": "float64",
+      "matrix_size": 1000,
+      "threads": 2,
+      "repeat": 3,
+      "times_sec": [
+        0.04777181099052541,
+        0.04824634200485889,
+        0.05374291101179551
+      ],
+      "avg_sec": 0.04992035466905994,
+      "min_sec": 0.04777181099052541,
+      "max_sec": 0.05374291101179551
+    },
+    {
+      "operation": "matrix_multiplication",
+      "library": "pytorch",
+      "device": "cpu",
+      "dtype": "float64",
+      "matrix_size": 1000,
+      "threads": 4,
+      "repeat": 3,
+      "times_sec": [
+        0.03548991499701515,
+        0.030286744993645698,
+        0.035027566002099775
+      ],
+      "avg_sec": 0.03360140866425354,
+      "min_sec": 0.030286744993645698,
+      "max_sec": 0.03548991499701515
+    },
+    {
+      "operation": "matrix_multiplication",
+      "library": "pytorch",
+      "device": "cpu",
+      "dtype": "float64",
+      "matrix_size": 1000,
+      "threads": 6,
+      "repeat": 3,
+      "times_sec": [
+        0.04851378999592271,
+        0.05637860400020145,
+        0.05344115200568922
+      ],
+      "avg_sec": 0.05277784866727112,
+      "min_sec": 0.04851378999592271,
+      "max_sec": 0.05637860400020145
+    },
+    {
+      "operation": "matrix_multiplication",
+      "library": "pytorch",
+      "device": "cpu",
+      "dtype": "float64",
+      "matrix_size": 2000,
+      "threads": 1,
+      "repeat": 3,
+      "times_sec": [
+        0.9068610870017437,
+        0.812436276988592,
+        0.9925933359918417
+      ],
+      "avg_sec": 0.9039635666607259,
+      "min_sec": 0.812436276988592,
+      "max_sec": 0.9925933359918417
+    },
+    {
+      "operation": "matrix_multiplication",
+      "library": "pytorch",
+      "device": "cpu",
+      "dtype": "float64",
+      "matrix_size": 2000,
+      "threads": 2,
+      "repeat": 3,
+      "times_sec": [
+        0.7114040229935199,
+        0.5772799510014011,
+        0.5845146319916239
+      ],
+      "avg_sec": 0.6243995353288483,
+      "min_sec": 0.5772799510014011,
+      "max_sec": 0.7114040229935199
+    },
+    {
+      "operation": "matrix_multiplication",
+      "library": "pytorch",
+      "device": "cpu",
+      "dtype": "float64",
+      "matrix_size": 2000,
+      "threads": 4,
+      "repeat": 3,
+      "times_sec": [
+        0.5255867530067917,
+        0.5086336280073738,
+        0.4355317620065762
+      ],
+      "avg_sec": 0.4899173810069139,
+      "min_sec": 0.4355317620065762,
+      "max_sec": 0.5255867530067917
+    },
+    {
+      "operation": "matrix_multiplication",
+      "library": "pytorch",
+      "device": "cpu",
+      "dtype": "float64",
+      "matrix_size": 2000,
+      "threads": 6,
+      "repeat": 3,
+      "times_sec": [
+        0.2722617910039844,
+        0.328914228011854,
+        0.3733464999968419
+      ],
+      "avg_sec": 0.32484083967089344,
+      "min_sec": 0.2722617910039844,
+      "max_sec": 0.3733464999968419
+    },
+    {
+      "operation": "matrix_multiplication",
+      "library": "pytorch",
+      "device": "cpu",
+      "dtype": "float64",
+      "matrix_size": 3000,
+      "threads": 1,
+      "repeat": 3,
+      "times_sec": [
+        2.158804427002906,
+        2.187924441997893,
+        1.8552742059982847
+      ],
+      "avg_sec": 2.067334358333028,
+      "min_sec": 1.8552742059982847,
+      "max_sec": 2.187924441997893
+    },
+    {
+      "operation": "matrix_multiplication",
+      "library": "pytorch",
+      "device": "cpu",
+      "dtype": "float64",
+      "matrix_size": 3000,
+      "threads": 2,
+      "repeat": 3,
+      "times_sec": [
+        1.6530724309996003,
+        1.7080777960072737,
+        1.8791236289980588
+      ],
+      "avg_sec": 1.7467579520016443,
+      "min_sec": 1.6530724309996003,
+      "max_sec": 1.8791236289980588
+    },
+    {
+      "operation": "matrix_multiplication",
+      "library": "pytorch",
+      "device": "cpu",
+      "dtype": "float64",
+      "matrix_size": 3000,
+      "threads": 4,
+      "repeat": 3,
+      "times_sec": [
+        1.4381199869967531,
+        1.3601464620005572,
+        1.3414483239903348
+      ],
+      "avg_sec": 1.379904924329215,
+      "min_sec": 1.3414483239903348,
+      "max_sec": 1.4381199869967531
+    },
+    {
+      "operation": "matrix_multiplication",
+      "library": "pytorch",
+      "device": "cpu",
+      "dtype": "float64",
+      "matrix_size": 3000,
+      "threads": 6,
+      "repeat": 3,
+      "times_sec": [
+        1.2708382660057396,
+        1.2241776829905575,
+        1.2242820560059045
+      ],
+      "avg_sec": 1.2397660016674006,
+      "min_sec": 1.2241776829905575,
+      "max_sec": 1.2708382660057396
+    }
+  ]
+}

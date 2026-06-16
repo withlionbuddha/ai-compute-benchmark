@@ -30,3 +30,22 @@ In the event of any conflict between the Grant of Research Rights under Section 
 제한 대상 교육·홍보 주체가 적격 학술 사용자를 연구 참여자로 포함하더라도, 본 소프트웨어에 대한 연구 사용권은 부여되지 않습니다.
 제2조에 따른 연구 사용권 부여 조항과 본 조항이 상충하는 경우, 본 조항이 우선 적용됩니다.
 ```
+## CPU / GPU 사용여부
+
+```
+| 단계               | GPU 사용 여부 | 설명               |
+| ---------------- | --------: | ---------------- |
+| 토큰화              |    보통 CPU | 문장을 token id로 변환 |
+| Embedding        |    GPU 가능 | token id를 벡터로 변환 |
+| Attention        |    GPU 권장 | 대량 행렬곱           |
+| Linear / FFN     |    GPU 권장 | 대량 행렬곱           |
+| Loss 계산          |    GPU 가능 | CrossEntropy 등   |
+| Backpropagation  |    GPU 권장 | gradient 계산      |
+| Optimizer update |    GPU 가능 | weight 갱신        |
+
+### CPU
+문자열 처리, 토큰화, 데이터 로딩, 조건문 많은 전처리
+
+### GPU
+행렬곱, Attention, Linear, Backpropagation, 대규모 tensor 연산
+```
