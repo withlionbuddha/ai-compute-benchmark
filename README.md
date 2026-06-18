@@ -3,6 +3,9 @@ Benchmark suite for AI compute environments including Docker, WSL, Intel XPU, Op
 
 
 ## 0. 라이선스(License)
+> 본 섹션은 연구 사용권 부여 대상과 제한 대상을 명시합니다.  
+> 특히 **적격 학술 사용자**, **제한 대상 교육·홍보 주체**, **단독 사용 제한**, **상충 시 본 조항 우선 적용** 부분을 반드시 확인해야 합니다.
+
 ```
 10. Eligible Users for Grant of Research Rights
 
