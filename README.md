@@ -3,6 +3,9 @@ Benchmark suite for AI compute environments including Docker, WSL, Intel XPU, Op
 
 
 ## 0. 라이선스(License)
+> 본 섹션은 연구 사용권 부여 대상과 제한 대상을 명시합니다.  
+> 특히 **적격 학술 사용자**, **제한 대상 교육·홍보 주체**, **단독 사용 제한**, **상충 시 본 조항 우선 적용** 부분을 반드시 확인해야 합니다.
+
 ```
 10. Eligible Users for Grant of Research Rights
 
@@ -33,15 +36,15 @@ In the event of any conflict between the Grant of Research Rights under Section 
 ## CPU / GPU 사용여부
 
 ```
-| 단계               | GPU 사용 여부 | 설명               |
-| ---------------- | --------: | ---------------- |
-| 토큰화              |    보통 CPU | 문장을 token id로 변환 |
-| Embedding        |    GPU 가능 | token id를 벡터로 변환 |
-| Attention        |    GPU 권장 | 대량 행렬곱           |
-| Linear / FFN     |    GPU 권장 | 대량 행렬곱           |
-| Loss 계산          |    GPU 가능 | CrossEntropy 등   |
-| Backpropagation  |    GPU 권장 | gradient 계산      |
-| Optimizer update |    GPU 가능 | weight 갱신        |
+| 단계              | GPU 사용 여부 | 설명                   |
+| ---------------- | ------------- | ----------------------|
+| 토큰화            |보통 CPU       | 문장을 token id로 변환 |
+| Embedding        | GPU 가능      | token id를 벡터로 변환 |
+| Attention        | GPU 권장      | 대량 행렬곱            |
+| Linear / FFN     | GPU 권장      | 대량 행렬곱            |
+| Loss 계산        | GPU 가능       | CrossEntropy 등       |
+| Backpropagation  | GPU 권장      | gradient 계산         |
+| Optimizer update | GPU 가능      | weight 갱신           |
 
 ### CPU
 문자열 처리, 토큰화, 데이터 로딩, 조건문 많은 전처리
