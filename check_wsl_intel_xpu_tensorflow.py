@@ -6,7 +6,6 @@ import ctypes
 import platform
 import subprocess
 import warnings
-import signal
 from pathlib import Path
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -27,43 +26,7 @@ def save_report(prefix: str, report: dict) -> Path:
     return output_path
 
 
-def decode_exit_status(returncode: int | None) -> dict:
-    """Return structured crash information from a subprocess return code."""
-    info = {
-        "returncode": returncode,
-        "signal_number": None,
-        "signal_name": None,
-        "crashed": False,
-        "crash_reason": None,
-    }
-    if returncode is None:
-        return info
-
-    signal_number = None
-    if returncode < 0:
-        signal_number = -returncode
-    elif returncode >= 128:
-        signal_number = returncode - 128
-
-    if signal_number is not None:
-        info["signal_number"] = signal_number
-        try:
-            info["signal_name"] = signal.Signals(signal_number).name
-        except ValueError:
-            info["signal_name"] = f"UNKNOWN_SIGNAL_{signal_number}"
-
-    fatal_signals = {"SIGSEGV", "SIGABRT", "SIGBUS", "SIGILL", "SIGFPE"}
-    if info["signal_name"] in fatal_signals:
-        info["crashed"] = True
-        info["crash_reason"] = f"process terminated by {info['signal_name']}"
-    elif returncode in {132, 134, 135, 136, 139}:
-        info["crashed"] = True
-        info["crash_reason"] = f"process exited with fatal native error code {returncode}"
-
-    return info
-
-
-def command_result(cmd: list[str], max_lines: int = 160, timeout_sec: int | None = None) -> dict:
+def command_result(cmd: list[str], max_lines: int = 160) -> dict:
     try:
         result = subprocess.run(
             cmd,
@@ -71,19 +34,14 @@ def command_result(cmd: list[str], max_lines: int = 160, timeout_sec: int | None
             stderr=subprocess.PIPE,
             text=True,
             check=False,
-            timeout=timeout_sec,
         )
         stdout_lines = (result.stdout or "").splitlines()
         stderr_lines = (result.stderr or "").splitlines()
-        exit_status = decode_exit_status(result.returncode)
         return {
             "cmd": cmd,
             "cmd_str": " ".join(cmd),
             "found": True,
-            "timeout": False,
             "returncode": result.returncode,
-            "exit_status": exit_status,
-            "crashed": exit_status["crashed"],
             "stdout": {
                 "line_count": len(stdout_lines),
                 "truncated": len(stdout_lines) > max_lines,
@@ -96,80 +54,16 @@ def command_result(cmd: list[str], max_lines: int = 160, timeout_sec: int | None
             },
             "error": None,
         }
-    except subprocess.TimeoutExpired as exc:
-        stdout_lines = (exc.stdout or "").splitlines() if isinstance(exc.stdout, str) else []
-        stderr_lines = (exc.stderr or "").splitlines() if isinstance(exc.stderr, str) else []
-        return {
-            "cmd": cmd,
-            "cmd_str": " ".join(cmd),
-            "found": True,
-            "timeout": True,
-            "returncode": None,
-            "exit_status": decode_exit_status(None),
-            "crashed": False,
-            "stdout": {
-                "line_count": len(stdout_lines),
-                "truncated": len(stdout_lines) > max_lines,
-                "head": stdout_lines[:max_lines],
-            },
-            "stderr": {
-                "line_count": len(stderr_lines),
-                "truncated": len(stderr_lines) > max_lines,
-                "head": stderr_lines[:max_lines],
-            },
-            "error": f"command timed out after {timeout_sec} seconds",
-        }
     except FileNotFoundError:
         return {
             "cmd": cmd,
             "cmd_str": " ".join(cmd),
             "found": False,
-            "timeout": False,
             "returncode": None,
-            "exit_status": decode_exit_status(None),
-            "crashed": False,
             "stdout": {"line_count": 0, "truncated": False, "head": []},
             "stderr": {"line_count": 0, "truncated": False, "head": []},
             "error": f"command not found: {cmd[0]}",
         }
-
-
-PROBE_PREFIX = "__XPU_CHECK_JSON__"
-
-
-def parse_probe_payload(command: dict) -> dict | None:
-    for line in reversed(command.get("stdout", {}).get("head", [])):
-        if line.startswith(PROBE_PREFIX):
-            raw = line[len(PROBE_PREFIX):]
-            try:
-                return json.loads(raw)
-            except json.JSONDecodeError:
-                return {"json_parse_error": raw}
-    return None
-
-
-def run_python_probe(name: str, code: str, timeout_sec: int = 45) -> dict:
-    cmd = [sys.executable, "-X", "faulthandler", "-c", code]
-    command = command_result(cmd, max_lines=220, timeout_sec=timeout_sec)
-    payload = parse_probe_payload(command)
-    ok = bool(command["returncode"] == 0 and not command["crashed"] and not command["timeout"])
-    return {
-        "name": name,
-        "ok": ok,
-        "payload": payload,
-        "command": command,
-        "crashed": command["crashed"],
-        "timeout": command["timeout"],
-        "reason": (
-            command["exit_status"]["crash_reason"]
-            if command["crashed"]
-            else command["error"]
-            if command["error"]
-            else "completed"
-            if ok
-            else f"non-zero return code: {command['returncode']}"
-        ),
-    }
 
 
 def package_status(package_name: str) -> dict:
@@ -414,221 +308,84 @@ def check_level_zero() -> dict:
     }
 
 
-def check_pytorch_xpu() -> dict:
-    """
-    Run PyTorch/XPU checks in child Python processes.
-
-    Reason:
-    Native crashes such as segmentation fault cannot be caught by Python try/except
-    in the same process. Subprocess isolation keeps this report script alive and
-    records the exact stage that crashed.
-    """
+def check_tensorflow_xpu() -> dict:
     result = {
-        "subprocess_mode": True,
-        "import_ok": False,
-        "torch_version": None,
-        "torch_file": None,
-        "has_xpu": False,
-        "xpu_available": False,
-        "xpu_device_count": 0,
-        "devices": [],
-        "matmul_test_ok": False,
-        "warnings": [],
-        "stages": {},
-        "first_failed_stage": None,
-        "first_crashed_stage": None,
+        "tensorflow_import_ok": False,
+        "tensorflow_version": None,
+        "itex_import_ok": False,
+        "itex_version": None,
+        "physical_devices": {},
+        "gpu_devices": [],
+        "xpu_like_devices": [],
+        "simple_tensor_test_ok": False,
         "exception": None,
         "ok": False,
         "reason": None,
     }
+    try:
+        import tensorflow as tf
+        result["tensorflow_import_ok"] = True
+        result["tensorflow_version"] = getattr(tf, "__version__", None)
+    except Exception as exc:
+        result["exception"] = {"type": type(exc).__name__, "message": str(exc)}
+        result["reason"] = "tensorflow import failed"
+        return result
 
-    probes = [
-        (
-            "import_torch",
-            r"""
-import json
-import faulthandler
-faulthandler.enable()
-import torch
-print("__XPU_CHECK_JSON__" + json.dumps({
-    "import_ok": True,
-    "torch_version": torch.__version__,
-    "torch_file": getattr(torch, "__file__", None),
-    "has_xpu": hasattr(torch, "xpu"),
-}, ensure_ascii=False))
-""",
-        ),
-        (
-            "xpu_available",
-            r"""
-import json
-import warnings
-import faulthandler
-faulthandler.enable()
-import torch
-with warnings.catch_warnings(record=True) as captured:
-    warnings.simplefilter("always")
-    available = torch.xpu.is_available() if hasattr(torch, "xpu") else False
-    count = torch.xpu.device_count() if hasattr(torch, "xpu") else 0
-print("__XPU_CHECK_JSON__" + json.dumps({
-    "xpu_available": bool(available),
-    "xpu_device_count": int(count),
-    "warnings": [
-        {"category": w.category.__name__, "message": str(w.message)}
-        for w in captured
-    ],
-}, ensure_ascii=False))
-""",
-        ),
-        (
-            "xpu_device_names",
-            r"""
-import json
-import faulthandler
-faulthandler.enable()
-import torch
-devices = []
-count = torch.xpu.device_count() if hasattr(torch, "xpu") else 0
-for idx in range(count):
-    devices.append(torch.xpu.get_device_name(idx))
-print("__XPU_CHECK_JSON__" + json.dumps({
-    "xpu_device_count": int(count),
-    "devices": devices,
-}, ensure_ascii=False))
-""",
-        ),
-        (
-            "xpu_matmul",
-            r"""
-import json
-import faulthandler
-faulthandler.enable()
-import torch
-if not hasattr(torch, "xpu"):
-    print("__XPU_CHECK_JSON__" + json.dumps({
-        "matmul_test_ok": False,
-        "reason": "torch.xpu is not present",
-    }, ensure_ascii=False))
-    raise SystemExit(2)
-if not torch.xpu.is_available():
-    print("__XPU_CHECK_JSON__" + json.dumps({
-        "matmul_test_ok": False,
-        "reason": "torch.xpu.is_available() is False",
-    }, ensure_ascii=False))
-    raise SystemExit(3)
+    try:
+        import intel_extension_for_tensorflow as itex
+        result["itex_import_ok"] = True
+        result["itex_version"] = getattr(itex, "__version__", None)
+    except Exception as exc:
+        result["itex_import_ok"] = False
+        result["itex_exception"] = {"type": type(exc).__name__, "message": str(exc)}
 
-def get_best_device() -> str:
-    if hasattr(torch, "xpu") and torch.xpu.is_available():
-        return "xpu"
-    if torch.cuda.is_available():
-        return "cuda"
-    return "cpu"
-
-device = get_best_device()
-print("best_device=", device)
-x = torch.randn(256, 256, device=device)
-y = torch.randn(256, 256, device=device)
-
-z = x @ y
-torch.xpu.synchronize()
-print("__XPU_CHECK_JSON__" + json.dumps({
-    "matmul_test_ok": tuple(z.shape) == (256, 256),
-    "device": str(z.device),
-    "shape": list(z.shape),
-}, ensure_ascii=False))
-""",
-        ),
-    ]
-
-
-    for stage_name, code in probes:
-        if stage_name == "import_torch":
-            timeout_sec = 120
+    try:
+        device_types = ["CPU", "GPU", "XPU"]
+        for device_type in device_types:
+            try:
+                devices = tf.config.list_physical_devices(device_type)
+                result["physical_devices"][device_type] = [str(device) for device in devices]
+            except Exception as exc:
+                result["physical_devices"][device_type] = {"error": f"{type(exc).__name__}: {exc}"}
+        result["gpu_devices"] = result["physical_devices"].get("GPU", []) if isinstance(result["physical_devices"].get("GPU"), list) else []
+        xpu_list = result["physical_devices"].get("XPU", []) if isinstance(result["physical_devices"].get("XPU"), list) else []
+        result["xpu_like_devices"] = xpu_list + result["gpu_devices"]
+        with tf.device("/CPU:0"):
+            a = tf.constant([[1.0, 2.0], [3.0, 4.0]])
+            b = tf.matmul(a, a)
+        result["simple_tensor_test_ok"] = tuple(b.shape) == (2, 2)
+        result["ok"] = result["tensorflow_import_ok"] and result["itex_import_ok"] and len(result["xpu_like_devices"]) > 0
+        if result["ok"]:
+            result["reason"] = "TensorFlow/ITEX sees GPU or XPU-like device"
+        elif not result["itex_import_ok"]:
+            result["reason"] = "intel_extension_for_tensorflow import failed or is not installed"
         else:
-            timeout_sec = 45
-        stage = run_python_probe(stage_name, code, timeout_sec=timeout_sec)
-        result["stages"][stage_name] = stage
-
-        if stage["payload"]:
-            payload = stage["payload"]
-            if "import_ok" in payload:
-                result["import_ok"] = bool(payload["import_ok"])
-            if "torch_version" in payload:
-                result["torch_version"] = payload["torch_version"]
-            if "torch_file" in payload:
-                result["torch_file"] = payload["torch_file"]
-            if "has_xpu" in payload:
-                result["has_xpu"] = bool(payload["has_xpu"])
-            if "xpu_available" in payload:
-                result["xpu_available"] = bool(payload["xpu_available"])
-            if "xpu_device_count" in payload:
-                result["xpu_device_count"] = int(payload["xpu_device_count"])
-            if "devices" in payload:
-                result["devices"] = payload["devices"]
-            if "warnings" in payload:
-                result["warnings"] = payload["warnings"]
-            if "matmul_test_ok" in payload:
-                result["matmul_test_ok"] = bool(payload["matmul_test_ok"])
-
-        if stage["crashed"] and result["first_crashed_stage"] is None:
-            result["first_crashed_stage"] = stage_name
-
-        if not stage["ok"] and result["first_failed_stage"] is None:
-            result["first_failed_stage"] = stage_name
-
-        # Later stages depend on earlier stages. Stop after first native crash.
-        if stage["crashed"]:
-            break
-
-        # If torch import succeeds but no torch.xpu exists, later XPU stages add little value.
-        if stage_name == "import_torch" and stage["ok"] and stage["payload"] and not stage["payload"].get("has_xpu", False):
-            break
-
-    # xpu_available 또는 matmul이 성공했으면 torch.xpu는 존재한다고 판단
-    if result["xpu_available"] or result["xpu_device_count"] > 0 or result["matmul_test_ok"]:
-        result["has_xpu"] = True
-        
-    # xpu matmul까지 성공했다면 import torch도 성공했다고 판단
-    if result["matmul_test_ok"]:
-        result["import_ok"] = True
-
-    result["ok"] = bool(result["import_ok"] and result["has_xpu"] and result["xpu_available"] and result["matmul_test_ok"])
-
-    if result["ok"]:
-        result["reason"] = "PyTorch XPU matmul succeeded"
-    elif result["first_crashed_stage"]:
-        result["reason"] = f"native crash detected at stage: {result['first_crashed_stage']}"
-    elif result["first_failed_stage"]:
-        result["reason"] = f"PyTorch XPU check failed at stage: {result['first_failed_stage']}"
-    elif not result["has_xpu"]:
-        result["reason"] = "torch.xpu is not present"
-    elif not result["xpu_available"]:
-        result["reason"] = "torch.xpu.is_available() is False"
-    else:
-        result["reason"] = "PyTorch XPU matmul failed"
-
-
-    return result
+            result["reason"] = "TensorFlow/ITEX did not list GPU/XPU device"
+        return result
+    except Exception as exc:
+        result["exception"] = {"type": type(exc).__name__, "message": str(exc)}
+        result["reason"] = "exception during TensorFlow XPU check"
+        return result
 
 
 def summarize(checks: dict) -> dict:
     base_ok = checks["wsl_docker_bridge"]["ok"] and checks["intel_runtime_packages"]["ok"] and checks["opencl"]["ok"] and checks["level_zero"]["ok"]
-    pytorch_ok = checks["pytorch_xpu"]["ok"]
-    if pytorch_ok:
-        diagnosis = "PyTorch XPU 사용 가능"
+    tf_ok = checks["tensorflow_xpu"]["ok"]
+    if tf_ok:
+        diagnosis = "TensorFlow XPU 사용 가능"
         next_focus = "ready"
-        actions = ["PyTorch 학습/benchmark에서 device='xpu' 사용"]
+        actions = ["TensorFlow 모델에서 GPU/XPU device 사용"]
     elif base_ok:
-        diagnosis = "Intel XPU base는 가능하지만 PyTorch XPU 초기화가 실패함"
-        next_focus = "pytorch_xpu"
-        actions = ["torch XPU wheel 버전 확인", "torch.xpu warning 확인", "지원 GPU 모델 확인"]
+        diagnosis = "Intel XPU base는 가능하지만 TensorFlow XPU 장치 확인이 실패함"
+        next_focus = "tensorflow_xpu"
+        actions = ["intel-extension-for-tensorflow 설치/버전 확인", "tf.config.list_physical_devices 결과 확인"]
     else:
-        diagnosis = "PyTorch 이전의 Intel XPU base 단계가 아직 완료되지 않음"
+        diagnosis = "TensorFlow 이전의 Intel XPU base 단계가 아직 완료되지 않음"
         next_focus = "intel_xpu_base"
         actions = ["check_intel_xpu_base.py 먼저 통과 확인"]
     return {
         "intel_xpu_base_usable": base_ok,
-        "pytorch_xpu_usable": pytorch_ok,
+        "tensorflow_xpu_usable": tf_ok,
         "next_focus": next_focus,
         "diagnosis": diagnosis,
         "recommended_actions": actions,
@@ -642,23 +399,23 @@ def main() -> None:
         "intel_runtime_packages": check_intel_runtime_packages(),
         "opencl": check_opencl(),
         "level_zero": check_level_zero(),
-        "pytorch_xpu": check_pytorch_xpu(),
+        "tensorflow_xpu": check_tensorflow_xpu(),
     }
     report = {
         "started_at": started_at,
         "finished_at": now_kst(),
         "timezone": "Asia/Seoul",
-        "scope": "Intel XPU base + PyTorch XPU runtime",
+        "scope": "Intel XPU base + TensorFlow XPU runtime",
         "environment": check_environment(),
         "checks": checks,
         "summary": summarize(checks),
     }
-    output_path = save_report("pytorch_xpu_check", report)
+    output_path = save_report("tensorflow_xpu_check", report)
     print("=" * 90)
-    print("PyTorch XPU Check Summary")
+    print("TensorFlow XPU Check Summary")
     print("=" * 90)
     print("intel_xpu_base_usable:", report["summary"]["intel_xpu_base_usable"])
-    print("pytorch_xpu_usable:", report["summary"]["pytorch_xpu_usable"])
+    print("tensorflow_xpu_usable:", report["summary"]["tensorflow_xpu_usable"])
     print("next_focus:", report["summary"]["next_focus"])
     print("diagnosis:", report["summary"]["diagnosis"])
     print("Saved:", output_path)
