@@ -1,0 +1,242 @@
+상업용 라이선스 COMMERCIAL LICENSE
+
+Copyright © 라이온과같이 All rights reserved.
+
+1.  정의
+1.  Definitions
+
+“소프트웨어”란 이 라이선스와 함께 배포되는 소스코드, 문서, 예제, 설정
+파일 및 기타 관련 자료를 의미합니다. “Software” means the source code,
+documentation, examples, configuration files, and other related
+materials distributed with this License.
+
+“라이선스 제공자”란 소프트웨어의 저작권자인 라이온과같이를 의미합니다.
+“Licensor” means 라이온과같이, the copyright holder of the Software.
+
+“상업적 이용”이란 소프트웨어 또는 소프트웨어를 포함하거나 이를 기반으로
+작성된 결과물을 영리 목적으로 사용, 통합, 배포, 판매, 라이선스 제공,
+호스팅 또는 기타 방식으로 제공하는 것을 의미합니다. “Commercial Use”
+means using, incorporating, distributing, selling, licensing, hosting,
+or otherwise providing the Software, or works containing or based on the
+Software, for commercial purposes.
+
+2.  라이선스 계약 및 비용
+2.  License Agreement and Fees
+
+상업적 이용을 위해서는 상업적 이용을 시작하기 전에 라이선스 제공자와
+서면 및 전자적 형태의 상업용 라이선스 계약을 반드시 작성하고 체결하여야
+합니다. For Commercial Use, a written and electronic Commercial License
+Agreement must be prepared and executed with the Licensor before any
+Commercial Use begins.
+
+구두 합의만으로는 상업적 이용 권한이 부여되지 않으며, 서면 및 전자적
+계약이 체결되지 않은 상태에서는 본 소프트웨어를 상업적으로 이용할 수
+없습니다. No Commercial Use rights are granted by oral agreement alone,
+and the Software may not be used for Commercial Use unless the required
+written and electronic agreement has been executed.
+
+상업용 라이선스 비용은 대한민국 원화(KRW)를 기준으로 하며, 각 상업적
+이용에 대한 개별 계약을 통해 결정합니다. Commercial License fees shall
+be denominated in Korean Won (KRW) and determined through an individual
+agreement for each Commercial Use.
+
+라이선스 비용은 이용 목적, 이용 범위, 사용자 수, 배포 방식, 서비스 제공
+방식, 계약 기간, 기술지원 및 기타 계약 조건을 기준으로 당사자 간 협의를
+통해 결정합니다. License fees shall be determined by agreement between
+the parties based on the purpose and scope of use, number of users,
+method of distribution, service delivery model, contract term, technical
+support, and other contractual conditions.
+
+최종 라이선스 비용, 지급 방법, 지급 기한, 계약 기간, 허용되는 이용 범위
+및 기타 상업적 이용 조건은 체결된 서면 및 전자적 상업용 라이선스 계약에
+반드시 명시하여야 합니다. The final license fees, payment method,
+payment due dates, contract term, permitted scope of use, and other
+conditions of Commercial Use must be expressly stated in the executed
+written and electronic Commercial License Agreement.
+
+상업적 이용 권한은 해당 개별 계약이 체결되고 계약에서 정한 라이선스 비용
+및 기타 이용 조건이 충족된 경우에만 발생합니다. Commercial Use rights
+arise only after the applicable individual agreement has been executed
+and the license fee and other conditions specified in that agreement
+have been satisfied.
+
+3.  이용 범위
+3.  Scope
+
+제2조에 따른 상업용 라이선스 계약을 체결하고 해당 계약 및 이 라이선스의
+조건을 준수하는 경우에만 상업용 라이선스 보유자는 소프트웨어를
+상업적으로 이용할 수 있습니다. A Commercial License holder may use the
+Software for Commercial Use only after executing the Commercial License
+Agreement required under Section 2 and complying with that agreement and
+this License.
+
+구체적인 이용 범위는 체결된 개별 상업용 라이선스 계약에서 정합니다. The
+specific scope of permitted use shall be determined in the executed
+individual Commercial License Agreement.
+
+개별 계약에서 허용한 범위 내에서 소프트웨어를 제품 또는 서비스에 포함할
+수 있습니다. The Software may be incorporated into products or services
+within the scope permitted by the individual agreement.
+
+개별 계약에서 허용한 범위 내에서 소프트웨어를 수정하거나 파생 저작물을
+작성할 수 있습니다. The Software may be modified or used to create
+derivative works within the scope permitted by the individual agreement.
+
+소프트웨어를 포함하는 제품 또는 서비스의 배포, 판매 또는 제3자 제공
+여부와 그 범위는 개별 계약에서 정합니다. Whether and to what extent
+products or services containing the Software may be distributed, sold,
+or provided to third parties shall be determined in the individual
+agreement.
+
+4.  출처 표시 및 인용 의무
+4.  Attribution and Citation Requirements
+
+이 라이선스에 따른 소프트웨어의 이용에는 다음의 출처 표시 및 인용 의무가
+적용됩니다. Use of the Software under this License is subject to the
+following attribution and citation requirements.
+
+4.1 논문, 보고서 및 출판물 
+4.1 Academic Papers, Reports, and Publications
+
+소프트웨어, 문서, 방법론, 개념 또는 그 중 상당한 부분을 논문, 기술
+보고서, 출판물, 발표자료 또는 이와 유사한 저작물에서 인용하거나
+참고하거나 사용하는 경우 원 저작자 또는 저작권자를 라이온과같이로
+명시해야 합니다. When the Software, its documentation, methodology,
+concepts, or substantial portions thereof are quoted, referenced, or
+used in an academic paper, technical report, publication, presentation,
+or similar work, the original author or copyright holder must be
+identified as 라이온과같이.
+
+해당 자료를 가져온 원본 repository 또는 기타 원본 출처도 함께 명시해야
+합니다. The original repository or other original source from which the
+material was obtained must also be identified.
+
+4.2 README 및 문서 
+4.2 README and Documentation
+
+README, 문서, diagram, 설명 또는 기타 상당한 분량의 작성물을 복사, 수정
+또는 재배포하는 경우 원본 repository 또는 원본 출처를 명확하게 표시해야
+합니다. When README content, documentation, diagrams, explanations, or
+other substantial written materials are copied, adapted, or
+redistributed, the original repository or source must be clearly
+identified.
+
+4.3 소스코드 
+4.3 Source Code
+
+소프트웨어의 소스코드를 복사, 수정 또는 재배포하는 경우 기존의 저작권
+표시를 유지해야 합니다. When source code from the Software is copied,
+modified, or redistributed, the existing copyright notice must be
+retained.
+
+Copyright © 라이온과같이 All rights reserved.
+
+원본 소프트웨어의 저작자 또는 소유권을 사실과 다르게 표시하는 방식으로
+해당 저작권 표시를 삭제하거나 변경해서는 안 됩니다. The copyright notice
+must not be removed or altered in a manner that falsely represents the
+authorship or ownership of the original Software.
+
+4.4 파생 저작물 
+4.4 Derivative Works
+
+소프트웨어를 포함하거나 소프트웨어에 상당 부분 기반한 파생 저작물에는
+라이온과같이가 원 저작자 또는 저작권자임을 합리적으로 확인할 수 있는
+형태로 표시해야 합니다. Derivative works incorporating or substantially
+based on the Software must provide reasonable attribution identifying
+라이온과같이 as the original author or copyright holder.
+
+파생 저작물에는 원본 repository 또는 원본 출처도 명시해야 합니다. The
+original repository or source must also be identified in the derivative
+work.
+
+출처 표시는 라이선스 제공자가 해당 파생 저작물을 보증하거나 승인한다는
+의미가 아닙니다. Attribution does not imply endorsement or approval of
+the derivative work by the Licensor.
+
+5.  보증 및 기술지원
+5.  Warranty and Technical Support
+
+별도의 상업용 라이선스 계약에서 명시적으로 정하지 않는 한 소프트웨어는
+어떠한 보증도 없이 “있는 그대로” 제공됩니다. Unless expressly provided
+in an individual Commercial License Agreement, the Software is provided
+“AS IS”, without warranty of any kind.
+
+보증, 유지보수, 장애 대응 시간, Service Level Agreement 및 기술지원의
+범위와 비용은 필요한 경우 개별 상업용 라이선스 계약에서 정합니다. The
+scope and cost of warranties, maintenance, incident response times,
+Service Level Agreements, and technical support shall, where applicable,
+be determined in the individual Commercial License Agreement.
+
+6.  소스코드 접근
+6.  Source Access
+
+상업용 라이선스 보유자의 소스코드 접근 권한과 이용 범위는 개별 상업용
+라이선스 계약에서 정합니다. A Commercial License holder’s rights to
+access and use the source code shall be determined in the individual
+Commercial License Agreement.
+
+개별 계약에서 공개 의무를 명시하지 않는 한 수정 사항 또는 파생 저작물을
+공개적으로 배포할 의무는 없습니다. Unless the individual agreement
+expressly requires disclosure, Commercial License holders are not
+required to publicly disclose their modifications or derivative works.
+
+허용된 배포에는 제4조의 출처 표시 및 인용 의무가 계속 적용됩니다. Any
+permitted distribution remains subject to the attribution and citation
+requirements of Section 4.
+
+7.  계약 기간 및 갱신
+7.  Term and Renewal
+
+상업용 라이선스의 계약 기간은 각 개별 상업용 라이선스 계약에서 정합니다.
+The term of a Commercial License shall be determined in each individual
+Commercial License Agreement.
+
+계약의 갱신 여부, 갱신 기간, 갱신 비용 및 갱신 조건도 해당 개별 계약
+또는 당사자 간에 새로 체결하는 계약에서 정합니다. Renewal, renewal
+periods, renewal fees, and renewal conditions shall be determined in the
+applicable individual agreement or in a new agreement executed between
+the parties.
+
+8.  준수 및 종료
+8.  Compliance and Termination
+
+이 라이선스에 따라 부여되는 권리는 이 라이선스 및 체결된 개별 상업용
+라이선스 계약의 조건을 준수하는 것을 전제로 합니다. The rights granted
+under this License are conditional upon compliance with this License and
+the executed individual Commercial License Agreement.
+
+출처 표시, 라이선스 비용, 이용 범위 또는 기타 중요한 계약 조건을
+위반하는 경우 이 라이선스 또는 개별 계약에 따라 부여된 권리가 종료될 수
+있습니다. Failure to comply with attribution requirements, license fees,
+the permitted scope of use, or other material contractual conditions may
+result in termination of the rights granted under this License or the
+individual agreement.
+
+계약이 종료된 경우 종료 이후의 소프트웨어 이용 및 기존 배포물의 처리
+방법은 관련 법률과 개별 계약에서 정한 조건에 따릅니다. Upon termination,
+subsequent use of the Software and treatment of previously distributed
+works shall be governed by applicable law and the terms specified in the
+individual agreement.
+
+9.  준거법
+9. Governing Law
+
+이 라이선스는 대한민국 법률에 따라 해석되고 적용됩니다. This License
+shall be governed by and construed in accordance with the laws of the
+Republic of Korea.
+
+관련 법률에서 허용하는 저작권자의 권리 또는 구제수단은 이 라이선스에
+의해 제한되지 않습니다. Nothing in this License limits any rights or
+remedies available to the copyright holder under applicable law.
+
+10. 언어 및 해석
+10. Language and Interpretation
+
+이 라이선스는 한국어 원문과 영어 번역문으로 제공됩니다. This License is
+provided in the original Korean text together with an English
+translation.
+
+한국어와 영어 문구 사이에 의미 또는 해석상의 차이가 발생하는 경우 한국어
+원문을 기준으로 합니다. In the event of any inconsistency or difference
+in interpretation between the Korean and English texts, the Korean text
+shall prevail.
