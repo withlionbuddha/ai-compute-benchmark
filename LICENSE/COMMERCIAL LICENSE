@@ -1,3 +1,5 @@
+[![License Updated 2026](https://img.shields.io/badge/License-Updated%202026-2ea44f?style=flat-square)](../README.md)
+
 상업용 라이선스 COMMERCIAL LICENSE
 
 Copyright © 라이온과같이 All rights reserved.
@@ -129,7 +131,7 @@ identified.
 modified, or redistributed, the existing copyright notice must be
 retained.
 
-Copyright © 라이온과같이 All rights reserved.
+Copyright © 라이온과같이  All rights reserved.
 
 원본 소프트웨어의 저작자 또는 소유권을 사실과 다르게 표시하는 방식으로
 해당 저작권 표시를 삭제하거나 변경해서는 안 됩니다. The copyright notice
@@ -218,8 +220,26 @@ subsequent use of the Software and treatment of previously distributed
 works shall be governed by applicable law and the terms specified in the
 individual agreement.
 
-9.  준거법
-9. Governing Law
+9.  게임·가상현실·메타버스 분야 이용 금지
+9.  Prohibited Use in Games, Virtual Reality, and the Metaverse
+
+소프트웨어 및 그 수정본이나 파생 저작물은 게임, 가상현실(VR) 또는
+메타버스와 관련된 제품, 서비스, 콘텐츠, 플랫폼 또는 시스템을 개발,
+연구, 학습, 훈련, 시험, 평가, 운영, 배포하거나 제공하기 위한 목적으로
+사용할 수 없습니다.
+The Software, including any modifications or derivative works, may not be
+used to develop, research, learn, train, test, evaluate, operate,
+distribute, or provide any product, service, content, platform, or system
+related to games, virtual reality (VR), or the metaverse.
+
+이 금지는 상업용 라이선스 계약의 체결 여부와 관계없이 적용되며, 개별
+상업용 라이선스 계약으로도 해당 이용 권한이 부여되지 않습니다.
+This prohibition applies regardless of whether a Commercial License
+Agreement has been executed, and no individual Commercial License
+Agreement grants rights for such use.
+
+10.  준거법
+10. Governing Law
 
 이 라이선스는 대한민국 법률에 따라 해석되고 적용됩니다. This License
 shall be governed by and construed in accordance with the laws of the
@@ -229,8 +249,8 @@ Republic of Korea.
 의해 제한되지 않습니다. Nothing in this License limits any rights or
 remedies available to the copyright holder under applicable law.
 
-10. 언어 및 해석
-10. Language and Interpretation
+11. 언어 및 해석
+11. Language and Interpretation
 
 이 라이선스는 한국어 원문과 영어 번역문으로 제공됩니다. This License is
 provided in the original Korean text together with an English
